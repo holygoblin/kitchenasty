@@ -590,6 +590,8 @@ model SiteSettings {
   heroSection     Json?    // { title, subtitle, ctaPrimaryText, ctaPrimaryLink, ctaSecondaryText, ctaSecondaryLink, backgroundImage }
   featuresSection Json?    // [{ icon, title, description }]
   ctaSection      Json?    // { title, description, buttonText, buttonLink }
+  defaultCurrency  String  @default("EUR")  
+  currencySymbol   String  @default("€")   
 
   // Operational settings
   generalSettings     Json?  // { timezone, distanceUnit, googleMapsApiKey, defaultCurrency, currencySymbol, currencyPosition, contactEmail, contactPhone }
