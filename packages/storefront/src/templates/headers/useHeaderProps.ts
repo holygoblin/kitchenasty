@@ -17,7 +17,7 @@ export function useHeaderProps() {
     { to: '/', label: t('nav.home') },
     { to: '/locations', label: t('nav.locations') },
     { to: '/menu', label: t('nav.menu') },
-    { to: '/reservations', label: t('nav.reservations') },
+//    { to: '/reservations', label: t('nav.reservations') },
   ];
 
   function isActive(path: string) {

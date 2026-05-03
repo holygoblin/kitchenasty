@@ -13,7 +13,7 @@ import Account from './pages/Account.js';
 import Menu from './pages/Menu.js';
 import Checkout from './pages/Checkout.js';
 import OrderConfirmation from './pages/OrderConfirmation.js';
-import Reservations from './pages/Reservations.js';
+//import Reservations from './pages/Reservations.js';
 import OrderHistory from './pages/OrderHistory.js';
 import OrderStatus from './pages/OrderStatus.js';
 import AuthCallback from './pages/AuthCallback.js';
@@ -34,7 +34,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
             <Route path="/" element={<Home />} />
             <Route path="/locations" element={<Locations />} />
             <Route path="/menu" element={<Menu />} />
-            <Route path="/reservations" element={<Reservations />} />
+         {/*  <Route path="/reservations" element={<Reservations />} /> */}
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/order/:id" element={<OrderConfirmation />} />
             <Route path="/login" element={<Login />} />
