@@ -2,8 +2,12 @@ import { useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useCart } from '../context/CartContext.js';
+import { useTheme } from '../context/ThemeContext.js';
+import { formatPrice } from '../lib/formatPrice.js';
 
 export default function CartDrawer() {
+  const { settings } = useTheme();
+  const { currencySymbol } = settings;
   const { t } = useTranslation();
   const { items, isOpen, setIsOpen, updateQuantity, removeItem, clear, subtotal } = useCart();
 
@@ -102,7 +106,7 @@ export default function CartDrawer() {
                     </div>
                     {/* Price */}
                     <div className="text-sm font-medium text-gray-900">
-                      ${lineTotal.toFixed(2)}
+                      {formatPrice(lineTotal, currencySymbol)}
                     </div>
                   </div>
                 );
@@ -116,7 +120,7 @@ export default function CartDrawer() {
           <div className="border-t border-gray-200 px-6 py-4 space-y-3">
             <div className="flex justify-between text-sm">
               <span className="text-gray-600">{t('cart.subtotal')}</span>
-              <span className="font-semibold text-gray-900">${subtotal.toFixed(2)}</span>
+              <span className="font-semibold text-gray-900">{formatPrice(subtotal, currencySymbol)}</span>
             </div>
             <Link
               to="/checkout"
