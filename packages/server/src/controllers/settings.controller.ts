@@ -58,6 +58,8 @@ function toPublicSettings(settings: Awaited<ReturnType<typeof getOrCreateSetting
     ctaSection: settings.ctaSection,
     createdAt: settings.createdAt,
     updatedAt: settings.updatedAt,
+    defaultCurrency: settings.defaultCurrency,
+    currencySymbol: settings.currencySymbol,
   };
 }
 
