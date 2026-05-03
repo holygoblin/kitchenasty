@@ -252,10 +252,27 @@ export async function updateGeneralSettings(req: Request, res: Response): Promis
     res.status(400).json({ success: false, error: parsed.error.errors });
     return;
   }
-  const data = await updateSettingsGroup('generalSettings', parsed.data);
+
+  await getOrCreateSettings();
+
+  // Felder in Top-Level-Spalten spiegeln
+  const topLevelSync: Record<string, any> = {};
+  if (parsed.data.defaultCurrency !== undefined)
+    topLevelSync.defaultCurrency = parsed.data.defaultCurrency;
+  if (parsed.data.currencySymbol !== undefined)
+    topLevelSync.currencySymbol = parsed.data.currencySymbol;
+
+  await prisma.siteSettings.update({
+    where: { id: 'default' },
+    data: {
+      generalSettings: parsed.data,
+      ...topLevelSync,               // ← Top-Level gleichzeitig aktualisieren
+    },
+  });
+
+  const data = await getSettingsGroup('generalSettings');
   res.json({ success: true, data });
 }
-
 // ============================================================
 // ORDER SETTINGS
 // ============================================================
