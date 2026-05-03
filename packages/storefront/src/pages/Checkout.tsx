@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useCart } from '../context/CartContext.js';
 import { useAuth } from '../context/AuthContext.js';
+import { useTheme } from '../context/ThemeContext.js';
+import { formatPrice } from '../lib/formatPrice.js';
 
 type OrderType = 'delivery' | 'pickup';
 type PaymentMethod = 'cash' | 'stripe' | 'paypal';
@@ -13,6 +15,8 @@ export default function Checkout() {
   const { t } = useTranslation();
   const { items, subtotal, clear } = useCart();
   const { user, token } = useAuth();
+  const { settings } = useTheme();
+  const { currencySymbol } = settings;
   const navigate = useNavigate();
 
   const [orderType, setOrderType] = useState<OrderType>('delivery');
@@ -338,7 +342,7 @@ export default function Checkout() {
                 <span className="text-sm text-gray-600">points to redeem</span>
                 {loyaltyRedeem > 0 && (
                   <span className="text-sm font-medium text-green-600">
-                    -${loyaltyDiscount.toFixed(2)}
+                    -{formatPrice(loyaltyDiscount, currencySymbol)}
                   </span>
                 )}
               </div>
@@ -453,7 +457,7 @@ export default function Checkout() {
                       )}
                     </div>
                     <span className="text-gray-900 font-medium">
-                      ${((item.price + optionsTotal) * item.quantity).toFixed(2)}
+                      {formatPrice((item.price + optionsTotal) * item.quantity, currencySymbol)}
                     </span>
                   </div>
                 );
@@ -463,27 +467,27 @@ export default function Checkout() {
             <div className="border-t border-gray-200 pt-3 space-y-2 text-sm">
               <div className="flex justify-between">
                 <span className="text-gray-600">{t('checkout.subtotal')}</span>
-                <span className="text-gray-900">${subtotal.toFixed(2)}</span>
+                <span className="text-gray-900">{formatPrice(subtotal, currencySymbol)}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-600">{t('checkout.tax')}</span>
-                <span className="text-gray-900">${tax.toFixed(2)}</span>
+                <span className="text-gray-900">{formatPrice(tax, currencySymbol)}</span>
               </div>
               {orderType === 'delivery' && (
                 <div className="flex justify-between">
                   <span className="text-gray-600">{t('checkout.deliveryFee')}</span>
-                  <span className="text-gray-900">${currentDeliveryFee.toFixed(2)}</span>
+                  <span className="text-gray-900">{formatPrice(currentDeliveryFee, currencySymbol)}</span>
                 </div>
               )}
               {loyaltyDiscount > 0 && (
                 <div className="flex justify-between text-green-600">
                   <span>Loyalty Discount</span>
-                  <span>-${loyaltyDiscount.toFixed(2)}</span>
+                  <span>-{formatPrice(loyaltyDiscount, currencySymbol)}</span>
                 </div>
               )}
               <div className="flex justify-between border-t border-gray-200 pt-2 font-bold text-base">
                 <span>{t('checkout.total')}</span>
-                <span className="text-primary-600">${total.toFixed(2)}</span>
+                <span className="text-primary-600">{formatPrice(total, currencySymbol)}</span>
               </div>
             </div>
 
@@ -496,7 +500,7 @@ export default function Checkout() {
                 ? 'Currently Unavailable'
                 : loading
                   ? t('checkout.processing')
-                  : `${t('checkout.placeOrder')} — $${total.toFixed(2)}`}
+                  : `${t('checkout.placeOrder')} — ${formatPrice(total, currencySymbol)}`}
             </button>
           </div>
         </div>

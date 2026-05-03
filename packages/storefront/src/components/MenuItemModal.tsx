@@ -1,6 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useCart } from '../context/CartContext.js';
+import { useTheme } from '../context/ThemeContext.js';
+import { formatPrice } from '../lib/formatPrice.js';
 
 interface OptionValue {
   id: string;
@@ -46,6 +48,8 @@ interface Props {
 export default function MenuItemModal({ itemId, onClose }: Props) {
   const { t } = useTranslation();
   const { addItem } = useCart();
+  const { settings } = useTheme();
+  const { currencySymbol } = settings;
   const [item, setItem] = useState<MenuItemDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -200,7 +204,7 @@ export default function MenuItemModal({ itemId, onClose }: Props) {
             <div className="p-6">
               <div className="flex items-start justify-between gap-3 mb-2">
                 <h2 className="text-xl font-bold text-gray-900">{item.name}</h2>
-                <span className="text-xl font-bold text-primary-600">${item.price.toFixed(2)}</span>
+                <span className="text-xl font-bold text-primary-600">{formatPrice(item.price, currencySymbol)}</span>
               </div>
 
               <span className="text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">
@@ -249,7 +253,7 @@ export default function MenuItemModal({ itemId, onClose }: Props) {
                           {opt.values.map((val) => (
                             <option key={val.id} value={val.id}>
                               {val.name}
-                              {val.priceModifier !== 0 && ` (+$${val.priceModifier.toFixed(2)})`}
+                              {val.priceModifier !== 0 && ` (+${formatPrice(val.priceModifier, currencySymbol)})`}
                             </option>
                           ))}
                         </select>
@@ -277,7 +281,7 @@ export default function MenuItemModal({ itemId, onClose }: Props) {
                                 <span className="text-sm text-gray-900 flex-1">{val.name}</span>
                                 {val.priceModifier !== 0 && (
                                   <span className="text-xs text-gray-500">
-                                    +${val.priceModifier.toFixed(2)}
+                                    +{formatPrice(val.priceModifier, currencySymbol)}
                                   </span>
                                 )}
                               </label>
@@ -312,7 +316,7 @@ export default function MenuItemModal({ itemId, onClose }: Props) {
                     onClick={handleAddToCart}
                     className="bg-primary-600 text-white px-6 py-2.5 rounded-lg font-semibold hover:bg-primary-700 transition-colors"
                   >
-                    {t('menu.addToCart')} &mdash; ${calculateTotal().toFixed(2)}
+                    {t('menu.addToCart')} &mdash; {formatPrice(calculateTotal(), currencySymbol)}
                   </button>
                 </div>
               </div>
