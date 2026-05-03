@@ -36,6 +36,8 @@ export interface SiteSettings {
   heroSection: HeroSection | null;
   featuresSection: FeatureItem[] | null;
   ctaSection: CtaSection | null;
+  defaultCurrency: string;    
+  currencySymbol: string;    
 }
 
 interface ThemeContextType {
@@ -56,6 +58,8 @@ const defaultSettings: SiteSettings = {
   heroSection: null,
   featuresSection: null,
   ctaSection: null,
+  defaultCurrency: 'EUR',
+  currencySymbol: '€',
 };
 
 const ThemeContext = createContext<ThemeContextType>({
